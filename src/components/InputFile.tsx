@@ -1,6 +1,6 @@
 import { FC, InputHTMLAttributes, useState } from 'react';
 
-export const FormFile: FC<InputHTMLAttributes<HTMLInputElement>> = ({
+export const InputFile: FC<InputHTMLAttributes<HTMLInputElement>> = ({
   onChange,
   ...props
 }) => {

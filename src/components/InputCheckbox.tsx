@@ -1,10 +1,10 @@
 import { FC, InputHTMLAttributes, useId } from 'react';
 
-type FormCheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
+type InputCheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
 };
 
-export const FormCheckbox: FC<FormCheckboxProps> = ({ label, ...props }) => {
+export const InputCheckbox: FC<InputCheckboxProps> = ({ label, ...props }) => {
   const id = useId();
 
   return (

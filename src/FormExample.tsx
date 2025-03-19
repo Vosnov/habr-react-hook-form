@@ -6,12 +6,12 @@ import {
   zodFormNumber,
   zodFormString,
 } from './shared/zod-utils';
-import { FormInput } from './components/FormInput';
+import { Input } from './components/Input';
 import { FormField } from './components/FormField';
-import { FormNumber } from './components/FormNumber';
-import { FormTabSelect } from './components/FormTabSelect';
-import { FormFile } from './components/FormFile';
-import { FormCheckbox } from './components/FormCheckbox';
+import { InputNumber } from './components/InputNumber';
+import { TabSelect } from './components/TabSelect';
+import { InputFile } from './components/InputFile';
+import { InputCheckbox } from './components/InputCheckbox';
 
 const schema = z
   .object({
@@ -71,7 +71,7 @@ export const FormExample = () => {
         name={'login'}
         form={form}
       >
-        <FormInput
+        <Input
           type='text'
           placeholder='Логин'
           {...register('login')}
@@ -82,7 +82,7 @@ export const FormExample = () => {
         name={'password'}
         form={form}
       >
-        <FormInput
+        <Input
           type='password'
           placeholder='Пароль'
           {...register('password')}
@@ -93,7 +93,7 @@ export const FormExample = () => {
         name={'repeatPassword'}
         form={form}
       >
-        <FormInput
+        <Input
           type='password'
           placeholder='Повторите пароль'
           {...register('repeatPassword')}
@@ -104,7 +104,7 @@ export const FormExample = () => {
         name={'age'}
         form={form}
       >
-        <FormNumber
+        <InputNumber
           type='text'
           placeholder='Возраст'
           {...register('age')}
@@ -115,7 +115,7 @@ export const FormExample = () => {
         name={'date'}
         form={form}
       >
-        <FormInput
+        <Input
           type='date'
           placeholder='День рождения'
           {...register('date')}
@@ -126,7 +126,7 @@ export const FormExample = () => {
         name={'skills'}
         label='Умения'
       >
-        <FormTabSelect
+        <TabSelect
           options={[
             { label: 'CSS', value: 'css' },
             { label: 'JavaScript', value: 'js' },
@@ -140,13 +140,13 @@ export const FormExample = () => {
         name={'file'}
         form={form}
       >
-        <FormFile {...register('file')} />
+        <InputFile {...register('file')} />
       </FormField>
       <FormField
         form={form}
         name='rememberMe'
       >
-        <FormCheckbox
+        <InputCheckbox
           label='Запомни меня'
           {...register('rememberMe')}
         />

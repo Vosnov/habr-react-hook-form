@@ -6,11 +6,11 @@ type TabSelectOption = {
   label: string;
 };
 
-type FormTabSelectProps = InputHTMLAttributes<HTMLInputElement> & {
+type TabSelectProps = InputHTMLAttributes<HTMLInputElement> & {
   options: TabSelectOption[];
 };
 
-export const FormTabSelect: FC<FormTabSelectProps> = ({
+export const TabSelect: FC<TabSelectProps> = ({
   options,
   defaultValue,
   ...props

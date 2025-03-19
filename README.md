@@ -19,14 +19,20 @@
 - Файл\* - `File` только `.png`
 - Запомни меня - `boolean`
 
-Для начала давайте начнем с простых компонентов. Сверстаем компоненты `FormInput`, `FormNumber`, `FormCheckbox`
+![](https://habrastorage.org/webt/fn/rm/lo/fnrmloq9g8weslcoolmwfhlfpvw.png)
+
+### Полный пример формы на CodeSandbox
+
+[![Edit Vosnov/habr-react-hook-form/main](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/p/github/Vosnov/habr-react-hook-form/main?import=true&embed=1)
+
+Для начала давайте начнем с простых компонентов. Сверстаем компоненты `Input`, `InputNumber`, `InputCheckbox`
 
 <details>
 
-<summary>FormInput</summary>
+<summary>Input</summary>
 
 ```tsx
-export const FormInput: FC<InputHTMLAttributes<HTMLInputElement>> = (props) => {
+export const Input: FC<InputHTMLAttributes<HTMLInputElement>> = (props) => {
   return (
     <input
       className={'form-field__input'}
@@ -40,10 +46,10 @@ export const FormInput: FC<InputHTMLAttributes<HTMLInputElement>> = (props) => {
 
 <details>
 
-<summary>FormNumber</summary>
+<summary>InputNumber</summary>
 
 ```tsx
-export const FormNumber: FC<InputHTMLAttributes<HTMLInputElement>> = ({
+export const InputNumber: FC<InputHTMLAttributes<HTMLInputElement>> = ({
   onChange,
   ...props
 }) => (
@@ -62,14 +68,14 @@ export const FormNumber: FC<InputHTMLAttributes<HTMLInputElement>> = ({
 
 <details>
 
-<summary>FormCheckbox</summary>
+<summary>InputCheckbox</summary>
 
 ```tsx
-type FormCheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
+type InputCheckboxProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: string;
 };
 
-export const FormCheckbox: FC<FormCheckboxProps> = ({ label, ...props }) => {
+export const InputCheckbox: FC<InputCheckboxProps> = ({ label, ...props }) => {
   const id = useId();
 
   return (
@@ -103,32 +109,32 @@ export const FormExample = () => {
 
   return (
     <form onSubmit={onSubmit}>
-      <FormInput
+      <Input
         type='text'
         placeholder='Логин'
         name='login'
       />
-      <FormInput
+      <Input
         type='password'
         placeholder='Пароль'
         name='password'
       />
-      <FormInput
+      <Input
         type='password'
         placeholder='Повторите пароль'
         name='repeatPassword'
       />
-      <FormNumber
+      <InputNumber
         type='text'
         placeholder='Возраст'
         name='age'
       />
-      <FormInput
+      <Input
         type='date'
         placeholder='День рождения'
         name='date'
       />
-      <FormCheckbox
+      <InputCheckbox
         label='Запомни меня'
         name='rememberMe'
       />
@@ -158,33 +164,30 @@ export const FormExample = () => {
 
 Если оставить все поля пустыми
 
-```typescript
-{
-  login: "",
-  password: "",
-  repeatPassword: ""
-  age: "",
-  birthday: "",
-}
-```
-
 При использовании `FormData` стоит учесть несколько особенностей. `FormData` содержит в себе ключ - значение (тип может быть только `string` или `Blob`). В нашем случае мы получили объект в котором все поля типа `string`, что не совсем корректно. Эти особенности `FormData` можно нивелировать с помощью библиотеки `zod`, которая предоставляет методы для валидации полей, плюсом может преобразовать поля в нужный нам тип.
 
 Вот `zod` схема, которая позволит на валидировать и трансформировать поля нужным нам образом:
 
 ```typescript
+/* 
+  FormData возвращает строку. Даже если поле будет пустым, то вернётся пустая строка.
+  Этот препроцессор заменяет пустую строку на undefined для удобства в дальнейшей валидации
+*/
 export const zodFormString = <T extends z.ZodTypeAny>(schema: T) =>
-  z.preprocess(
-    (value) => (value && String(value).length > 0 ? String(value) : undefined),
-    schema,
-  );
+  z.preprocess((value) => (value ? String(value) : undefined), schema);
 
+/*
+  Заменяет строку на number или undefined
+*/
 export const zodFormNumber = <T extends z.ZodTypeAny>(schema: T) =>
   z.preprocess((value) => {
     const num = Number(value);
     return isNaN(num) ? undefined : num;
   }, schema);
 
+/*
+  Заменяет строку на ISOString или undefined
+*/
 export const zodFormDate = <T extends z.ZodTypeAny>(schema: T) =>
   z.preprocess(
     (value) => (value ? new Date(String(value)).toISOString() : undefined),
@@ -442,7 +445,7 @@ export const FormExample = () => {
         name={'login'}
         form={form}
       >
-        <FormInput
+        <Input
           type='text'
           placeholder='Логин'
           {...register('login')}
@@ -453,7 +456,7 @@ export const FormExample = () => {
         name={'password'}
         form={form}
       >
-        <FormInput
+        <Input
           type='password'
           placeholder='Пароль'
           {...register('password')}
@@ -464,7 +467,7 @@ export const FormExample = () => {
         name={'repeatPassword'}
         form={form}
       >
-        <FormInput
+        <Input
           type='password'
           placeholder='Повторите пароль'
           {...register('repeatPassword')}
@@ -475,7 +478,7 @@ export const FormExample = () => {
         name={'age'}
         form={form}
       >
-        <FormNumber
+        <InputNumber
           type='text'
           placeholder='Возраст'
           {...register('age')}
@@ -486,7 +489,7 @@ export const FormExample = () => {
         name={'date'}
         form={form}
       >
-        <FormInput
+        <Input
           type='date'
           placeholder='День рождения'
           {...register('date')}
@@ -496,7 +499,7 @@ export const FormExample = () => {
         form={form}
         name='rememberMe'
       >
-        <FormCheckbox
+        <InputCheckbox
           label='Запомни меня'
           {...register('rememberMe')}
         />
@@ -520,7 +523,7 @@ export const FormExample = () => {
 
 <details>
 
-<summary>FormTabSelect</summary>
+<summary>TabSelect</summary>
 
 ```tsx
 type TabSelectOption = {
@@ -528,11 +531,11 @@ type TabSelectOption = {
   label: string;
 };
 
-type FormTabSelectProps = InputHTMLAttributes<HTMLInputElement> & {
+type TabSelectProps = InputHTMLAttributes<HTMLInputElement> & {
   options: TabSelectOption[];
 };
 
-export const FormTabSelect: FC<FormTabSelectProps> = ({
+export const TabSelect: FC<TabSelectProps> = ({
   options,
   defaultValue,
   ...props
@@ -616,7 +619,7 @@ const schema = z
 И прокинем в форму этот компонент:
 
 ```tsx
-<FormTabSelect
+<TabSelect
   options={[
     { label: 'CSS', value: 'css' },
     { label: 'JavaScript', value: 'js' },
@@ -645,3 +648,6 @@ const schema = z
 - <b>Неконтролируемые</b> компоненты используют `ref` или `FormData` для получения значений напрямую из DOM-элементов, а не хранят их в стейте. Это снижает количество ререндеров и делает работу с формами более производительной.
 
 # Полезные ссылки
+
+- [Документация zod](https://zod.dev/)
+- [Полный пример формы на GitHub](https://github.com/Vosnov/habr-react-hook-form)
