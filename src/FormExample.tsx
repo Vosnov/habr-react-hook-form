@@ -77,6 +77,7 @@ export const FormExample = () => {
           {...register('login')}
         />
       </FormField>
+
       <FormField
         label='Пароль'
         name={'password'}
@@ -88,6 +89,7 @@ export const FormExample = () => {
           {...register('password')}
         />
       </FormField>
+
       <FormField
         label='Повторите пароль'
         name={'repeatPassword'}
@@ -99,6 +101,7 @@ export const FormExample = () => {
           {...register('repeatPassword')}
         />
       </FormField>
+
       <FormField
         label='Возраст'
         name={'age'}
@@ -110,6 +113,7 @@ export const FormExample = () => {
           {...register('age')}
         />
       </FormField>
+
       <FormField
         label='День рождения'
         name={'date'}
@@ -121,6 +125,7 @@ export const FormExample = () => {
           {...register('date')}
         />
       </FormField>
+
       <FormField
         form={form}
         name={'skills'}
@@ -136,12 +141,14 @@ export const FormExample = () => {
           {...register('skills')}
         />
       </FormField>
+
       <FormField
         name={'file'}
         form={form}
       >
         <InputFile {...register('file')} />
       </FormField>
+
       <FormField
         form={form}
         name='rememberMe'
@@ -151,6 +158,7 @@ export const FormExample = () => {
           {...register('rememberMe')}
         />
       </FormField>
+
       <button
         disabled={isLoading}
         type='submit'
