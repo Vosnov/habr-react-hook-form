@@ -56,7 +56,6 @@ export const FormExample = () => {
     onError: (e, setErrors, form) => {
       console.log(e, setErrors, form);
 
-      form.currentTarget.reset();
       // if (isAxiosError(e)) {
       //    setErros(...)
       //    form.currentTarget.reset()
