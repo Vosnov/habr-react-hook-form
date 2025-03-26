@@ -6,13 +6,19 @@ import {
 } from 'react';
 import { z } from 'zod';
 
+type FormErrors = Partial<Record<string, string[]>>;
+
 type UseFormConfig<TOutput> = {
   schema: z.Schema;
   onSubmit?: (
     values: TOutput,
     form: FormEvent<HTMLFormElement>,
   ) => Promise<void>;
-  onError?: (err: unknown, form: FormEvent<HTMLFormElement>) => void;
+  onError?: (
+    err: unknown,
+    setErrors: (erros: FormErrors) => void,
+    form: FormEvent<HTMLFormElement>,
+  ) => void;
   defaultState?: Partial<TOutput>;
 };
 
@@ -32,7 +38,7 @@ export const useForm = <TOutput>({
   onError,
 }: UseFormConfig<TOutput>) => {
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<Partial<Record<string, string[]>>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const formOnSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -54,7 +60,7 @@ export const useForm = <TOutput>({
         setErrors(err.formErrors.fieldErrors);
       }
 
-      onError?.(err, e);
+      onError?.(err, setErrors, e);
     } finally {
       setIsLoading(false);
     }
@@ -116,5 +122,6 @@ export const useForm = <TOutput>({
     register,
     isLoading,
     getRequired,
+    setErrors,
   };
 };
