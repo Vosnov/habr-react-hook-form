@@ -53,8 +53,8 @@ export const FormExample = () => {
   const form = useForm<UserFormData>({
     schema: schema,
     onSubmit: async (value) => console.log(value),
-    onError: (e, setErros, form) => {
-      console.log(e, setErros, form);
+    onError: (e, setErrors, form) => {
+      console.log(e, setErrors, form);
 
       form.currentTarget.reset();
       // if (isAxiosError(e)) {
